@@ -203,7 +203,7 @@ def getTopTen(dictionary):
         top_ten = sorted_vals
     else:
         ## if we have more than 10, return the top ten
-        top_ten = sorted_vals[0:9]    
+        top_ten = sorted_vals[0:10]    
     
     ## return the top 10 keys
     return top_ten
