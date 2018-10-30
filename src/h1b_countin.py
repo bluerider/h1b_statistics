@@ -10,7 +10,7 @@ def main():
     soc_count_dict = {}
     
     ## parse the cmdline
-    ## use custom input files if available
+    ## use custom input file if available
     if len(sys.argv) > 1:
         paths = [sys.argv[1]]
         print("Using : ", paths)
@@ -53,7 +53,7 @@ def main():
         print("Failed to calculate percentages!")
         return
     ## write values to csv file
-    ## use output file if supplied
+    ## use occupation file if supplied
     if len(sys.argv) > 2:
         soc_outfile = sys.argv[2]
     else:
@@ -68,7 +68,7 @@ def main():
     except:
         print("Failed to write to", soc_outfile)
         return
-    ## use output file if supplied
+    ## use state file if supplied
     if len(sys.argv) > 3:
         state_outfile = sys.argv[3]
     else:
@@ -99,9 +99,12 @@ def main():
 def getFiles(path,
              file_paths = []
             ):
+    ## get the files in the path
     files = os.listdir(path)
     for file in files:
+        ## filter only for .csv files
         if file.endswith('.csv'):
+            ## make a usable file path
             file_paths.append(os.path.join(path, file))
             
     ## return the file paths
@@ -146,6 +149,9 @@ def readFile2(path,
                 ## handle case sensitivity
                 soc = split_line[soc_index].upper()
                 state = split_line[state_index].upper()
+                ## if we encounter a key in the dictionary
+                ## increase keys' value by 1
+                ## otherwise add the key to the dictionary
                 if soc in soc_count_dict:
                     soc_count_dict[soc] += 1
                 else:
@@ -175,8 +181,9 @@ def getPercentages(keys,
     ## loop to get percentages
     percentages = {}
     for key in keys:
-        ## main two digit rounding
+        ## round to 2 digits
         percentage = round(dictionary[key] / total, 2)
+        ## convert to percentages
         percentages[key] = "{:.1%}".format(percentage)
     
     ## retun the percentages array
@@ -196,9 +203,7 @@ def getTopTen(dictionary):
         top_ten = sorted_vals
     else:
         ## if we have more than 10, return the top ten
-        top_ten = sorted_vals[0:9]
-    ## we'll sort again alphabetically
-    
+        top_ten = sorted_vals[0:9]    
     
     ## return the top 10 keys
     return top_ten
