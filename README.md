@@ -60,7 +60,7 @@ While the default behavior for `h1b_countin.py` is to analyze data in ``input``,
 4. Obtain the output files specified in `<state_output_file>` and `<occupation_output file>`.
 
 ## Analyzing multiple files
-`h1b_countin.py` will analyze all files in `input` as its default behavior. Simply add additional data in a **semi-color-separated** format `";"` `.csv` file into the `input` directory and run `h1b_countin.py`.
+`h1b_countin.py` will analyze all files in `input` as its default behavior. Simply add additional data in a **semi-color-separated** format `";"` `.csv` file into the `input` directory and run `python3 h1b_countin.py`.
 
 # Questions/FAQ
 1. *I've encountered an error in your program!*
