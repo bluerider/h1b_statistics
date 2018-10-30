@@ -124,39 +124,37 @@ def readFile2(path,
     ## open file for parsing
     with open(path) as file:
         csvfile = csv.reader(file, delimiter=';', quotechar='"')
+        ## parse the headr
+        header = next(csvfile)
+        ## the column indices change for the csv files
+        ## we'll need to determine them from the first line
+        ## loop through the split_line to find our needed values
+        ## if it doesn't find them, we use the defaults specified
+        ## in the function parameters
+        for index in range(len(header)):
+            if header[index].upper() == "STATUS" or header[index].upper() == "CASE_STATUS":
+                status_index = index
+            if header[index].upper() == "WORKSITE_STATE" or header[index].upper() == "PRIMARY_WORKSITE_STATE" or header[index].upper() == "LCA_CASE_WORKLOC1_STATE":
+                state_index = index
+            if header[index] == "LCA_CASE_SOC_NAME" or header[index].upper() == "SOC_NAME":
+                soc_index = index
         ## parse line by line
         for split_line in csvfile:
-            ## check if we're at the first line
-            if split_line[0] != "":
-                ## if we aren't proceed to parse the data
-                ## check if we are certified
-                if split_line[status_index] == "CERTIFIED":
-                    ## handle case sensitivity
-                    soc = split_line[soc_index].upper()
-                    state = split_line[state_index].upper()
-                    if soc in soc_count_dict:
-                        soc_count_dict[soc] += 1
-                    else:
-                        soc_count_dict[soc] = 1
-                    if state in state_count_dict:
-                        state_count_dict[state] += 1
-                    else:
-                        state_count_dict[state] = 1
-            ## the column indices change for the csv files
-            ## we'll need to determine them from the first line
-            else:
-                ## loop through the split_line to find our needed values
-                ## if it doesn't find them, we use the defaults specified
-                ## in the function parameters
-                for index in range(len(split_line)):
-                    if split_line[index] == "STATUS" or split_line[index] == "CASE_STATUS":
-                        certified_index = index
-                    #if split_line[index] == "LCA_CASE_EMPLOYER_STATE" or split_line[index] == "EMPLOYER_STATE":
-                    if split_line[index] == "WORKSITE_STATE" or split_line[index] == "PRIMARY_WORKSITE_STATE" or split_line[index] == "LCA_CASE_WORKLOC1_STATE":
-                        state_index = index
-                    if split_line[index] == "LCA_CASE_SOC_NAME" or split_line[index] == "SOC_NAME":
-                        soc_index = index
-                        
+            ## if we aren't proceed to parse the data
+            ## check if we are certified
+            if split_line[status_index] == "CERTIFIED":
+                ## handle case sensitivity
+                soc = split_line[soc_index].upper()
+                state = split_line[state_index].upper()
+                if soc in soc_count_dict:
+                    soc_count_dict[soc] += 1
+                else:
+                    soc_count_dict[soc] = 1
+                if state in state_count_dict:
+                    state_count_dict[state] += 1
+                else:
+                    state_count_dict[state] = 1
+                    
     ## return the dictionaries in an array
     return [state_count_dict, soc_count_dict]
 
