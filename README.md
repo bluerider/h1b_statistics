@@ -44,7 +44,7 @@ FINANCIAL ANALYSTS;8194;1.0%
          WA;55193;4.0%
          
 # Tests
-I highly suggest running `insight_testsuite/run_tests.sh` to ensure the program is functioning properly. It should **pass** all its tests.
+I highly suggest running `bash insight_testsuite/run_tests.sh` to ensure the program is functioning properly. It should **pass** all its tests.
         
 # Usage
 
