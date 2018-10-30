@@ -19,29 +19,29 @@ In order to obtain quantitative measures of H1B visas certifications, I obtained
 2. Run `bash run.sh` to analyze the data.
 3. Two output files summarizing the analysis will be written to:
 	 * `output/top_10_occupations.txt` : Top 10 occupations for certified visa applications 
-         >	TOP_OCCUPATIONS;NUMBER_CERTIFIED_APPLICATIONS;PERCENTAGE
-         > COMPUTER SYSTEMS ANALYSTS;107736;20.0%
-         > SOFTWARE DEVELOPERS, APPLICATIONS;88806;16.0%
-         > COMPUTER PROGRAMMERS;81032;15.0%
-         > COMPUTER OCCUPATIONS, ALL OTHER;50277;9.0%
-         > SOFTWARE DEVELOPERS, SYSTEMS SOFTWARE;15364;3.0%
-         > MANAGEMENT ANALYSTS;12037;2.0%
-         > ACCOUNTANTS AND AUDITORS;9841;2.0%
-         > NETWORK AND COMPUTER SYSTEMS ADMINISTRATORS;9494;2.0%
-         > FINANCIAL ANALYSTS;8194;1.0%
+        TOP_OCCUPATIONS;NUMBER_CERTIFIED_APPLICATIONS;PERCENTAGE
+        COMPUTER SYSTEMS ANALYSTS;107736;20.0%
+        SOFTWARE DEVELOPERS, APPLICATIONS;88806;16.0%
+        COMPUTER PROGRAMMERS;81032;15.0%
+        COMPUTER OCCUPATIONS, ALL OTHER;50277;9.0%
+        SOFTWARE DEVELOPERS, SYSTEMS SOFTWARE;15364;3.0%
+        MANAGEMENT ANALYSTS;12037;2.0%
+        ACCOUNTANTS AND AUDITORS;9841;2.0%
+        NETWORK AND COMPUTER SYSTEMS ADMINISTRATORS;9494;2.0%
+        FINANCIAL ANALYSTS;8194;1.0%
 
 
 	* `output/top_10_states.txt` : Top 10 states for certified visa applications
-	     > TOP_STATES;NUMBER_CERTIFIED_APPLICATIONS;PERCENTAGE
-         > CA;289944;18.0%
-         > TX;159851;10.0%
-         > NY;141165;9.0%
-         > NJ;119880;8.0%
-         > IL;85213;5.0%
-         > MA;59145;4.0%
-         > GA;58972;4.0%
-         > PA;58454;4.0%
-         > WA;55193;4.0%
+	    TOP_STATES;NUMBER_CERTIFIED_APPLICATIONS;PERCENTAGE
+        CA;289944;18.0%
+        TX;159851;10.0%
+        NY;141165;9.0%
+        NJ;119880;8.0%
+        IL;85213;5.0%
+        MA;59145;4.0%
+        GA;58972;4.0%
+        PA;58454;4.0%
+        WA;55193;4.0%
          
 # Tests
 I highly suggest running `bash insight_testsuite/run_tests.sh` to ensure the program is functioning properly. It should **pass** all its tests.
