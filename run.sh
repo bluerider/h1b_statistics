@@ -4,5 +4,5 @@
 #
 #python ./src/h1b_counting.py ./input/h1b_input.csv ./output/top_10_occupations.txt ./output/top_10_states.txt
 echo "Running python source"
-python ./src/h1b_countin.py
+python3 ./src/h1b_countin.py
 echo "Finished running python source."
