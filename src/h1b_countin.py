@@ -210,5 +210,6 @@ def getTopTen(dictionary):
 
 ###########################################################
 
+## run the main insertion function
 if __name__ == '__main__':
     main()
