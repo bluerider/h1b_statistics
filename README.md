@@ -2,7 +2,8 @@
 1. [Problem](README.md#Problem)
 2. [Approach](README.md#Approach)
 3. [Run Instructions](README.md#Instructions)
-4. [Usage](README.md#Usage)
+4. [Run Tests](README.md#Tests)
+5. [Usage](README.md#Usage)
 6. [Questions?](README.md#questions?)
 
 # Problem
@@ -42,6 +43,9 @@ FINANCIAL ANALYSTS;8194;1.0%
          PA;58454;4.0%
          WA;55193;4.0%
          
+# Tests
+I highly suggest running `insight_testsuite/run_tests.sh` to ensure the program is functioning properly. It should **pass** all its tests.
+        
 # Usage
 
 ##  Analyzing a single file
