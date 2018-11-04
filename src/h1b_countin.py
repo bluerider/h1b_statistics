@@ -10,21 +10,15 @@ def main():
     soc_count_dict = {}
     
     ## parse the cmdline
-    ## use custom input file if available
-    if len(sys.argv) > 1:
-        paths = [sys.argv[1]]
-        print("Using : ", paths)
-    else:
-        ## get the directories in the input directory
-        try:
-            paths = getFiles("input", [])
-            print("Found input files : ", paths)
-        except:
-            print("Failed to find input files!")
-            return
-    ## loop for all paths
     try:
-        for path in paths:
+        input_paths, state_outfile, soc_outfile = parseArgs(sys.argv)
+    except:
+        print("Failed to parse the cmdline with : ", sys.argv)
+        return
+   
+    ## extract data from input files into dictionaries
+    try:
+        for path in input_paths:
             print("Reading : ", path)
             try:
                 ## get the dictionary array from reading a file
@@ -33,9 +27,11 @@ def main():
                                       soc_count_dict = soc_count_dict)
             except:
                 print("Failed to read : ", path, "Not using data from ", path)
+                return
     except:
         print("Failed to read input files!")
         return
+    
     ## get top 10 values
     print("Calculating top 10 values...")
     try:
@@ -44,6 +40,7 @@ def main():
     except:
         print("Failed to sort and calculate top 10 values!")
         return
+    
     ## get percentages
     print("Calculating percentages...")
     try:
@@ -52,38 +49,24 @@ def main():
     except:
         print("Failed to calculate percentages!")
         return
+    
     ## write values to csv file
-    ## use occupation file if supplied
-    if len(sys.argv) > 2:
-        soc_outfile = sys.argv[2]
-    else:
-        soc_outfile = "output/top_10_occupations.txt"
-    print("writing results to", soc_outfile)
-    try:
-        with open(soc_outfile, 'w') as csvfile:
-            csvwriter = csv.writer(csvfile, delimiter=';', quotechar='"')
-            csvwriter.writerow(['TOP_OCCUPATIONS', 'NUMBER_CERTIFIED_APPLICATIONS', 'PERCENTAGE'])
-            for key in top_soc:
-                csvwriter.writerow([key, soc_count_dict[key], top_soc_percentages[key]])
-    except:
-        print("Failed to write to", soc_outfile)
-        return
-    ## use state file if supplied
-    if len(sys.argv) > 3:
-        state_outfile = sys.argv[3]
-    else:
-        state_outfile = "output/top_10_states.txt"
-    print("Writing results to", state_outfile)
-    try:
-        with open(state_outfile, 'w') as csvfile:
-            csvwriter = csv.writer(csvfile, delimiter=';', quotechar='"')
-            csvwriter.writerow(['TOP_STATES', 'NUMBER_CERTIFIED_APPLICATIONS', 'PERCENTAGE'])
-            for key in top_states:
-                csvwriter.writerow([key, state_count_dict[key], top_state_percentages[key]])
-    except:
-        print("Failed to write to", state_outfile)
-        return
-    print("Check ouput/ for analysis")
+    for out_file, header, dictionary, percentages, array in zip([state_outfile, soc_outfile],
+                                                                [['TOP_STATES', 'NUMBER_CERTIFIED_APPLICATIONS', 'PERCENTAGE'],
+                                                                 ['TOP_OCCUPATIONS', 'NUMBER_CERTIFIED_APPLICATIONS', 'PERCENTAGE']],
+                                                                [state_count_dict, soc_count_dict],
+                                                                [top_state_percentages, top_soc_percentages],
+                                                                [top_states, top_soc]):
+        try:
+            print("Writing results to : ", out_file)
+            writeFile(out_file,
+                      header,
+                      [[key, dictionary[key], percentages[key]] for key in array])
+        except:
+            print("Failed to write to : ", out_file)
+            return
+    
+    print("Done with analysis!")
     
 ###########################################################
 
@@ -93,6 +76,51 @@ def main():
 ## py_cache but external libraries are specificially      #
 ## forbidden                                              #
 ###########################################################
+
+## process cmdline arguments
+## return the needed input and output file paths
+def parseArgs(args):
+    ## set initial values
+    input_path = "input"
+    state_outfile = "output/top_10_states.txt"
+    soc_outfile = "output/top_10_occupations.txt"
+    
+    if len(args) > 1:
+        input_path = args[1]
+    ## get the soc input file path
+    if len(args) > 2:
+        state_outfile = args[2]
+    ## get the soc output file path
+    if len(args) > 3:
+        soc_outfile = args[3]
+    ## we don't support more than 3 arguments
+    if len(args) > 4:
+        print("Unused arguments : ", args[4:])
+    
+    ## if input path is a directory
+    ## retrieve an array of all input files
+    ## only goes one dir deep
+    if os.path.isdir(input_path):
+        input_paths = getFiles(input_path, [])
+    else:
+        input_paths = [input_path]
+        
+    ## return needed paths
+    return input_paths, state_outfile, soc_outfile
+    
+
+## write csv files
+## takes the output file path
+## takes the header for the output file
+## takes an array of lines
+def writeFile(path,
+              header,
+              array):
+    with open(path, 'w') as csvfile:
+        csvwriter = csv.writer(csvfile, delimiter=';', quotechar='"')
+        csvwriter.writerow(header)
+        for line in array:
+            csvwriter.writerow(line)
 
 ## get all csv files in the input directory
 ## returns an array of file paths [file1, file2, ...]
@@ -127,7 +155,7 @@ def readFile2(path,
     ## open file for parsing
     with open(path) as file:
         csvfile = csv.reader(file, delimiter=';', quotechar='"')
-        ## parse the headr
+        ## parse the header
         header = next(csvfile)
         ## the column indices change for the csv files
         ## we'll need to determine them from the first line
@@ -143,7 +171,6 @@ def readFile2(path,
                 soc_index = index
         ## parse line by line
         for split_line in csvfile:
-            ## if we aren't proceed to parse the data
             ## check if we are certified
             if split_line[status_index] == "CERTIFIED":
                 ## handle case sensitivity
